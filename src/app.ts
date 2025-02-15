@@ -3,7 +3,12 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import cors from 'cors';
-import {User, Role} from './models';
+import {User, Role,
+    Hotel, Amenities_Hotel, Type_Hotel
+} from './models';
+import { manageRouter,
+    typeHotelRouter, amenitiesHotelRouter
+ } from './routes';
 
 const app = express();
 
@@ -29,5 +34,15 @@ app.use(express.urlencoded({extended: true}));
 //Đồng bộ Model lên CSDL
 User.sync();
 Role.sync();
+Hotel.sync();
+Amenities_Hotel.sync();
+Type_Hotel.sync();
+
+//cấu hình các router cần thiết
+app.use('/auth', manageRouter);
+//Hotel - Properties - CRUD
+
+app.use('/hotel-properties', typeHotelRouter);
+app.use('/hotel-properties', amenitiesHotelRouter);
 
 export default app;

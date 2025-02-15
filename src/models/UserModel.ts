@@ -11,6 +11,8 @@ class User extends Model {
   public provider?: string;//Kiểu đăng nhập google, fabook
   public provider_id?: string; //id
   public image_url?: string;
+  public country_code?: string;
+  public email_verified?: boolean; // email xác nhận
 }
 User.init({
   id: {
@@ -50,6 +52,15 @@ User.init({
   image_url: {
       type: DataTypes.STRING,
       allowNull: true
+  },
+  country_code: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  email_verified: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false, //Mặc định là false khi tạo mới user
+    allowNull: true,  
   }
 }, {
     sequelize:sequelize,

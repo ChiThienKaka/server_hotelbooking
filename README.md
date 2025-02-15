@@ -48,6 +48,45 @@ project-root/
 ├── .gitignore              # Tệp cấu hình bỏ qua của Git
 ├── package.json            # Thông tin dự án và danh sách dependencies
 └── README.md               # Tài liệu mô tả dự á
+
+
+## bảng 2 chia chi tiết hơn mô hình mvc
+/src
+│── /controllers        # Chứa các controller, chia theo module
+│   │── /auth           # Xử lý đăng nhập, đăng ký
+│   │   ├── auth.controller.js
+│   │── /manage         # Các API dành cho quản lý
+│   │   ├── user.controller.js
+│   │   ├── hotel.controller.js
+│   │── /hotel          # API lấy thông tin khách sạn
+│   │   ├── hotel.controller.js
+│   │   ├── room.controller.js
+│   │   ├── amenity.controller.js
+│   │── /common         # Các controller dùng chung
+│   │   ├── upload.controller.js
+│   │   ├── email.controller.js
+│
+│── /routes             # Chứa các route, chia theo module
+│   │── /auth           # Routes cho auth
+│   │   ├── auth.routes.js
+│   │── /manage         # Routes cho quản lý
+│   │   ├── user.routes.js
+│   │   ├── hotel.routes.js
+│   │── /hotel          # Routes cho khách sạn
+│   │   ├── hotel.routes.js
+│   │   ├── room.routes.js
+│   │   ├── amenity.routes.js
+│   │── /common         # Các route dùng chung
+│   │   ├── upload.routes.js
+│   │   ├── email.routes.js
+│
+│── /models             # Chứa các model của Sequelize hoặc Mongoose
+│── /services           # Xử lý nghiệp vụ, truy vấn DB thay vì xử lý trong controller
+│── /middlewares        # Middleware như auth, error handling
+│── /utils              # Các function tiện ích
+│── app.js              # Khởi tạo server, sử dụng các route
+│── server.js           # Chạy ứng dụng
+
 ## 1. Khởi tạo dự án 
 mở terminal: 
 - npm init or yarn init 
@@ -84,3 +123,7 @@ sequelize
 pg pg-hstore
 ### 5. Mã hóa dữ liệu password
 bcrypt
+### 6. Gửi gmail
+nodemailer
+### 7. JWT
+jsonwebtoken

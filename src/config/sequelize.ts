@@ -9,7 +9,15 @@ const DATABASE = process.env.DATABASE || ''
 const USERNAME = process.env.USERNAME || ''
 const PASSWORD = process.env.PASSWORD || ''
 
-const sequelize = new Sequelize(DATABASE, USERNAME, PASSWORD, {
+// liên kết server offline 
+// const sequelize = new Sequelize("hotel_booking", "postgres", "chithien", {
+//     host: "localhost",
+//     dialect: 'postgres',//loại cơ sở dữ liệu mysql, postgres ...
+//     logging: false,
+//   });
+  
+  //Liên kết online
+  const sequelize = new Sequelize(DATABASE, USERNAME, PASSWORD, {
     host: hostname,
     dialect: 'postgres',//loại cơ sở dữ liệu mysql, postgres ...
     logging: false,
@@ -21,7 +29,6 @@ const sequelize = new Sequelize(DATABASE, USERNAME, PASSWORD, {
         }
     }
   });
-  
 
   //Kiểm tra kết nối có thành công không
   sequelize.authenticate()
