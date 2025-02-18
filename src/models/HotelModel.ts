@@ -8,8 +8,19 @@ class Hotel extends Model {
   public address?: string;
   public policies?: string;//chính sách
   public arrAmenities?: string;
-  public checkIn?: string;
-  public checkOut?: string;
+  public type?: string;
+  public apartment?: string;
+  public city?: string;
+  public zipcode?: string;
+  public country?: string;
+  public rate?: number;
+  public checkinfrom?: string;
+  public checkinto?: string;
+  public checkoutfrom?: string;
+  public checkoutto?: string;
+  public ischildren?: boolean;
+  public isAnimal?: boolean;
+  public isRegister?: boolean;
 }
 Hotel.init({
   id: {
@@ -33,17 +44,65 @@ Hotel.init({
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  checkIn: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  checkOut: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   arrAmenities: {
     type: DataTypes.STRING,
     allowNull: true,
+  },
+  type: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  apartment: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  city: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  zipcode: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  country:{
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  rate:{
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: 0, 
+  },
+  checkinfrom:{
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  checkinto:{
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  checkoutfrom:{
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  checkoutto: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  ischildren: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+    defaultValue: true,  
+  },
+  isAnimal: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+    defaultValue: false,
+  },
+  isRegister:{
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+    defaultValue: false,  
   }
 }, {
     sequelize:sequelize,

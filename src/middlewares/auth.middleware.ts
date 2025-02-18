@@ -42,6 +42,8 @@ const checkRole = (roles: string[]) => {
             res.status(403).json({ message: "Bạn không có quyền truy cập tài nguyên này." });
             return;
         }
+        // Xóa user sau khi kiểm tra
+        delete req.body.user
         next();
     };
 };

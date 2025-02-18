@@ -4,10 +4,12 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import cors from 'cors';
 import {User, Role,
-    Hotel, Amenities_Hotel, Type_Hotel
+    Hotel, Amenities_Hotel, Type_Hotel,
+    TypeRoom,Bed, Room_Bed,
+    Room
 } from './models';
 import { manageRouter,
-    typeHotelRouter, amenitiesHotelRouter
+    typeHotelRouter, amenitiesHotelRouter, hotelRouter, roomRouter
  } from './routes';
 
 const app = express();
@@ -37,6 +39,10 @@ Role.sync();
 Hotel.sync();
 Amenities_Hotel.sync();
 Type_Hotel.sync();
+TypeRoom.sync();
+Bed.sync();
+Room_Bed.sync();
+Room.sync();
 
 //cấu hình các router cần thiết
 app.use('/auth', manageRouter);
@@ -44,5 +50,7 @@ app.use('/auth', manageRouter);
 
 app.use('/hotel-properties', typeHotelRouter);
 app.use('/hotel-properties', amenitiesHotelRouter);
+app.use('/hotel-properties', hotelRouter);
+app.use('/hotel-properties', roomRouter);
 
 export default app;
