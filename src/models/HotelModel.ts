@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, DATE, Model } from 'sequelize';
 import sequelize from '../config/sequelize'
 
 class Hotel extends Model {
@@ -21,6 +21,7 @@ class Hotel extends Model {
   public ischildren?: boolean;
   public isAnimal?: boolean;
   public isRegister?: boolean;
+  public images?: string;
 }
 Hotel.init({
   id: {
@@ -45,7 +46,7 @@ Hotel.init({
     allowNull: true,
   },
   arrAmenities: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   type: {
@@ -103,6 +104,10 @@ Hotel.init({
     type: DataTypes.BOOLEAN,
     allowNull: true,
     defaultValue: false,  
+  },
+  images: {
+    type: DataTypes.STRING,
+    allowNull: true,
   }
 }, {
     sequelize:sequelize,

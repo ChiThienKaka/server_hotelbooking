@@ -127,3 +127,5 @@ bcrypt
 nodemailer
 ### 7. JWT
 jsonwebtoken
+### 8. Multer
+upload FORMDATA
