@@ -7,73 +7,88 @@ const create = async (req: Request, res: Response) => {
     const {idhotel} = req.params; // Lấy ID từ URL
     const payload = req.body;
     try{
-        const roomValue = Object.fromEntries(Object.entries(payload).filter(([key, value]) => !key.startsWith("giuong")));
-        const bedValue = Object.entries(payload).filter(([key, value]) => key.startsWith("giuong"));
-        //Lấy id khách sạn và tạo Phòng dựa trên id khách sạn
-        const room = await Room.create({
-            id_hotel : idhotel,
-            ...roomValue
-        })
-        //thêm bào bảng Room_Bed
-        const idroom = room.id;
-        if(bedValue.length > 0){
-            // for chờ async/await, forEach thì không
-            for (const item of bedValue){
-                switch(item[0]){
-                    case "giuongdon":
-                        await Room_Bed.create({
-                            room_id: idroom,
-                            bed_id: 1,
-                            quantity: item[1]
-                        })
-                        break;
-                    case "giuongdoi":
-                        await Room_Bed.create({
-                            room_id: idroom,
-                            bed_id: 2,
-                            quantity: item[1]
-                        })
-                        break;
-                    case "giuonglon":
-                        await Room_Bed.create({
-                            room_id: idroom,
-                            bed_id: 3,
-                            quantity: item[1]
-                        })
-                        break;
-                    case "giuongcuclon":
-                        await Room_Bed.create({
-                            room_id: idroom,
-                            bed_id: 4,
-                            quantity: item[1]
-                        })
-                        break;
-                    case "giuongtang":
-                        await Room_Bed.create({
-                            room_id: idroom,
-                            bed_id: 5,
-                            quantity: item[1]
-                        })
-                        break;
-                    case "giuongsofa":
-                        await Room_Bed.create({
-                            room_id: idroom,
-                            bed_id: 6,
-                            quantity: item[1]
-                        })
-                        break;
-                    case "giuongfuton":
-                        await Room_Bed.create({
-                            room_id: idroom,
-                            bed_id: 7,
-                            quantity: item[1]
-                        })
-                        break;
+
+        const {sophong} = payload;
+        if(sophong){
+            // Tạo phòng theo số phòng
+            for(let i = 1; i <= sophong; i++){
+                const roomValue = Object.fromEntries(Object.entries(payload).filter(([key, value]) => !key.startsWith("giuong")));
+                const bedValue = Object.entries(payload).filter(([key, value]) => key.startsWith("giuong"));
+
+                //Lấy id khách sạn và tạo Phòng dựa trên id khách sạn
+                const room = await Room.create({
+                    id_hotel : idhotel,
+                    ...roomValue,
+                    //Gán đè bằng 1
+                    sophong: 1
+                })
+
+
+                //thêm bào bảng Room_Bed
+                const idroom = room.id;
+                if(bedValue.length > 0){
+                    // for chờ async/await, forEach thì không
+                    for (const item of bedValue){
+                        switch(item[0]){
+                            case "giuongdon":
+                                await Room_Bed.create({
+                                    room_id: idroom,
+                                    bed_id: 1,
+                                    quantity: item[1]
+                                })
+                                break;
+                            case "giuongdoi":
+                                await Room_Bed.create({
+                                    room_id: idroom,
+                                    bed_id: 2,
+                                    quantity: item[1]
+                                })
+                                break;
+                            case "giuonglon":
+                                await Room_Bed.create({
+                                    room_id: idroom,
+                                    bed_id: 3,
+                                    quantity: item[1]
+                                })
+                                break;
+                            case "giuongcuclon":
+                                await Room_Bed.create({
+                                    room_id: idroom,
+                                    bed_id: 4,
+                                    quantity: item[1]
+                                })
+                                break;
+                            case "giuongtang":
+                                await Room_Bed.create({
+                                    room_id: idroom,
+                                    bed_id: 5,
+                                    quantity: item[1]
+                                })
+                                break;
+                            case "giuongsofa":
+                                await Room_Bed.create({
+                                    room_id: idroom,
+                                    bed_id: 6,
+                                    quantity: item[1]
+                                })
+                                break;
+                            case "giuongfuton":
+                                await Room_Bed.create({
+                                    room_id: idroom,
+                                    bed_id: 7,
+                                    quantity: item[1]
+                                })
+                                break;
+                        }
+                    }
                 }
             }
+            res.status(200).json("OK tạo thành công");
+            return;
         }
-        res.status(200).json(roomValue);
-        return;
+        res.status(200).json({message: "số phòng không đúng"});
+        return
+        
     }catch(err){
         res.status(500).json({message: err});
         return;
@@ -101,4 +116,19 @@ const get = async (req: Request, res: Response) => {
         return;
     }
 }
-export {create, get}
+//lấy toàn bộ phòng mà không cần id khách sạn phục vụ cho cập nhật giá của phòng
+const getRooms = async (req: Request, res: Response) => {
+    try{
+        const rooms = await Room.findAll({raw: true});
+        // Lọc danh sách chỉ lấy các typeroom duy nhất
+        const uniqueRooms = Array.from(
+            new Map(rooms.map(room => [room?.loaichonghi, room])).values()
+        );
+        res.status(200).json(uniqueRooms);
+        return;
+    }catch(err){
+        res.status(500).json({message: err});
+        return;
+    }
+}
+export {create, get, getRooms}

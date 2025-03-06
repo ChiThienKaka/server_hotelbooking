@@ -7,6 +7,7 @@ import TypeRoom from "./TypeRoomModel";
 import Bed from "./Bed";
 import Room_Bed from "./Room_BedModel";
 import Room from "./Room";
+import RoomPrice from "./RoomPriceModel";
 export {User, Role, Hotel, Type_Hotel, Amenities_Hotel,
-    TypeRoom, Bed, Room_Bed, Room
+    TypeRoom, Bed, Room_Bed, Room, RoomPrice
 };
