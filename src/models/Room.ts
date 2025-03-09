@@ -17,6 +17,7 @@ class Room extends Model {
   public tiennghichung?: string;
   public nameroom?: string;
   public sotien?: number;
+  public is_available?: boolean;
 }
 Room.init({
   id: {
@@ -79,6 +80,11 @@ Room.init({
   sotien: {
     type: DataTypes.INTEGER,
     allowNull: true,
+  },
+  is_available:{
+    type: DataTypes.BOOLEAN,
+    defaultValue: true, //Mặc đ��nh s�� có giá trị mặc đ��nh là true
+    allowNull: true, //Không cho phép NULL
   }
 }, {
     sequelize:sequelize,
