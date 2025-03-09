@@ -5,7 +5,6 @@ import { Sequelize } from "sequelize";
 function getTimestampsInRange(startDate:any, endDate:any) {
     let start = new Date(startDate); // Ngày bắt đầu
     let end = new Date(endDate); // Ngày kết thúc
-    end.setDate(end.getDate() + 1); // Tăng ngày kết thúc thêm 1 ngày
 
     let dates: string[] = [];
 
@@ -46,4 +45,15 @@ const create = async (req: Request, res: Response) => {
         return;
     }
 }
-export {create}
+const getbyTyperoom = async (req: Request, res: Response) => {
+    try{
+        const {room_id} = req.body;
+        const roomprice = await RoomPrice.findAll({where: {room_id}, raw: true});
+        res.status(200).json(roomprice);
+        return;
+    }catch(err){
+        res.status(500).json({message: err});
+        return;
+    }
+}
+export {create, getbyTyperoom}

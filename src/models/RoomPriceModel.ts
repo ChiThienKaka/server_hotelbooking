@@ -3,7 +3,7 @@ import sequelize from '../config/sequelize'
 
 class RoomPrice extends Model {
   public id!: number;
-  room_id?:number;
+  room_id?:string;
   public ngays?: Date;
   public price?: number;
   public status?: boolean;
@@ -15,7 +15,7 @@ RoomPrice.init({
     primaryKey: true,
   },
   room_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   ngays: {
