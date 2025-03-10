@@ -3,6 +3,7 @@ import sequelize from '../config/sequelize'
 
 class Hotel extends Model {
   public id!: number;
+  public id_user?: number;
   public name?: string;
   public description?: string;
   public address?: string;
@@ -28,6 +29,10 @@ Hotel.init({
     type: DataTypes.INTEGER,
     autoIncrement: true,//Tự động tăng
     primaryKey: true,
+  },
+  id_user: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
   name: {
     type: DataTypes.STRING,
@@ -108,7 +113,7 @@ Hotel.init({
   images: {
     type: DataTypes.STRING,
     allowNull: true,
-  }
+  },
 }, {
     sequelize:sequelize,
     modelName:'Hotel',//Tên model này sẽ ánh xạ đến bảng dữ liệu trên database

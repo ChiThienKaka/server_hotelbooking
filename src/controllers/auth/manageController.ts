@@ -120,9 +120,9 @@ const login = async (req: Request, res: Response) => {
             raw: true //trả về JSON
         });
         res.status(201).json({
-            token: getAccessToken({
-                ...user, 
-                ...role
+            token: getAccessToken({ 
+                ...role,
+                ...user,
             })
         })
     }catch(err){
