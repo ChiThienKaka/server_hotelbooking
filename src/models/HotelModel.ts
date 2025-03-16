@@ -23,6 +23,8 @@ class Hotel extends Model {
   public isAnimal?: boolean;
   public isRegister?: boolean;
   public images?: string;
+  public latitude?: string;
+  public longitude?: string;
 }
 Hotel.init({
   id: {
@@ -114,6 +116,14 @@ Hotel.init({
     type: DataTypes.STRING,
     allowNull: true,
   },
+  latitude: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  longitude: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  }
 }, {
     sequelize:sequelize,
     modelName:'Hotel',//Tên model này sẽ ánh xạ đến bảng dữ liệu trên database

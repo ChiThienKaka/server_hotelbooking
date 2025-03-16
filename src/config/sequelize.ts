@@ -10,25 +10,25 @@ const USERNAME = process.env.USERNAME || ''
 const PASSWORD = process.env.PASSWORD || ''
 
 // liên kết server offline 
-const sequelize = new Sequelize("hotel_booking", "postgres", "chithien", {
-    host: "localhost",
+// const sequelize = new Sequelize("hotel_booking", "postgres", "chithien", {
+//     host: "localhost",
+//     dialect: 'postgres',//loại cơ sở dữ liệu mysql, postgres ...
+//     logging: false,
+//   });
+  
+  //Liên kết online
+  const sequelize = new Sequelize(DATABASE, USERNAME, PASSWORD, {
+    host: hostname,
     dialect: 'postgres',//loại cơ sở dữ liệu mysql, postgres ...
     logging: false,
+    dialectOptions: {
+        ssl: {
+          require: true,
+          // Thêm tùy chọn này nếu bạn không có chứng chỉ SSL
+          rejectUnauthorized: false 
+        }
+    }
   });
-  
-  // //Liên kết online
-  // const sequelize = new Sequelize(DATABASE, USERNAME, PASSWORD, {
-  //   host: hostname,
-  //   dialect: 'postgres',//loại cơ sở dữ liệu mysql, postgres ...
-  //   logging: false,
-  //   dialectOptions: {
-  //       ssl: {
-  //         require: true,
-  //         // Thêm tùy chọn này nếu bạn không có chứng chỉ SSL
-  //         rejectUnauthorized: false 
-  //       }
-  //   }
-  // });
 
   //Kiểm tra kết nối có thành công không
   sequelize.authenticate()
