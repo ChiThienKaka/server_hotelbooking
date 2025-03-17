@@ -118,8 +118,9 @@ const get = async (req: Request, res: Response) => {
 }
 //lấy toàn bộ phòng mà không cần id khách sạn phục vụ cho cập nhật giá của phòng
 const getRooms = async (req: Request, res: Response) => {
+    const {idhotel} = req.params;
     try{
-        const rooms = await Room.findAll({raw: true});
+        const rooms = await Room.findAll({where:{id_hotel: idhotel}, raw: true});
         // Lọc danh sách chỉ lấy các typeroom duy nhất
         const uniqueRooms = Array.from(
             new Map(rooms.map(room => [room?.loaichonghi, room])).values()
