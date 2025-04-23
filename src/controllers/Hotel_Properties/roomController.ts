@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Room, Room_Bed } from "../../models/index";
+import { Bed, Room, Room_Bed } from "../../models/index";
 import { Sequelize } from "sequelize";
 
 //Tạo phòng mới
@@ -116,7 +116,7 @@ const get = async (req: Request, res: Response) => {
         return;
     }
 }
-//lấy toàn bộ phòng mà không cần id khách sạn phục vụ cho cập nhật giá của phòng
+//lấy toàn bộ phòng dựa vào id khách sạn phục vụ cho cập nhật giá của phòng
 const getRooms = async (req: Request, res: Response) => {
     const {idhotel} = req.params;
     try{
@@ -132,4 +132,72 @@ const getRooms = async (req: Request, res: Response) => {
         return;
     }
 }
-export {create, get, getRooms}
+
+//Lấy phòng theo id phòng trong khách sạn
+const getRoomsById = async (req: Request, res: Response) => {
+    const {idroom} = req.params;
+    try{
+        const room = await Room.findOne({where: {id: idroom}, raw: true});
+        //lấy ra giường
+        const beds = await Room_Bed.findAll({where: {room_id: idroom}, raw: true})
+        const room_bed = await Promise.all(beds.map(async(item:any)=>{
+            const roomdetails = await Bed.findOne({where: {id: item.bed_id}, raw: true});
+            return {...roomdetails, ...item};
+        }))
+        const room_bed_object = room_bed.reduce((acc:any, item:any)=>{
+            acc[item.bed_id] = item; // Gán giá trị vào object
+            return acc; // Trả về object đã cập nhật
+        },{})
+        res.status(200).json({room, beds: room_bed_object});
+        return;
+    }catch(err){
+        res.status(500).json({message: err});
+        return;
+    }
+}
+//cập nhật phòng
+const updateBed_Room = async (req: Request, res: Response) => {
+    try{
+        const {idroom} = req.params;
+        const payload = req.body;
+        const maBed : { [key: string]: number } = {
+            "giuongdon": 1,
+            "giuongdoi":2,
+            "giuonglon":3,
+            "giuongcuclon":4,
+            "giuongtang":5,
+            "giuongsofa":6,
+            "giuongfuton":7
+        }
+        const roomValue = Object.fromEntries(Object.entries(payload).filter(([key, value]) => !key.startsWith("giuong")));
+        const bedValue = Object.fromEntries(Object.entries(payload).filter(([key, value]) => (key.startsWith("giuong") && Number(value) > 0)));
+        
+        // Chuyển đổi key theo mã trong maBed
+        const mabedValue = Object.fromEntries(
+            Object.entries(bedValue).map(([key, value]) => [maBed[key] || key, value])
+        );
+
+        //Lấy giường thuộc phòng
+        const bed_room = await Room_Bed.findAll({where: {room_id: idroom}, raw: true});
+        //Lấy phòng theo id phòng
+        const room = await Room.findOne({where: {id: idroom}});
+        //cập nhật thông tin phòng
+        room?.update(roomValue);
+        // cập nhật giường
+        for (const bed of bed_room){
+            if(mabedValue[`${bed.bed_id}`]){
+                const bed_id = bed.bed_id;
+                const quantity = mabedValue[`${bed_id}`];
+                await Room_Bed.update({quantity: quantity}, {where: {room_id: idroom, bed_id: bed_id}});
+            }
+        }
+        // trả về kết quả
+        res.status(200).json({roomValue, bedValue, mabedValue})
+        return;
+
+    }catch(err){
+        res.status(500).json({message: err});
+        return;
+    }
+}
+export {create, get, getRooms, getRoomsById, updateBed_Room}

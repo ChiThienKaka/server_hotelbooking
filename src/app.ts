@@ -6,10 +6,11 @@ import cors from 'cors';
 import {User, Role,
     Hotel, Amenities_Hotel, Type_Hotel,
     TypeRoom,Bed, Room_Bed,
-    Room, RoomPrice
+    Room, RoomPrice,
+    BookingDetail, BookingHistory, BookingHotel
 } from './models';
 import { manageRouter,
-    typeHotelRouter, amenitiesHotelRouter, hotelRouter, roomRouter, roompriceRouter
+    typeHotelRouter, amenitiesHotelRouter, hotelRouter, roomRouter, roompriceRouter, userRouter
  } from './routes';
 
 const app = express();
@@ -45,6 +46,9 @@ Room_Bed.sync();
 Room.sync();
 RoomPrice.sync();
 
+BookingHotel.sync();
+BookingDetail.sync();
+BookingHistory.sync();
 //cấu hình các router cần thiết
 app.use('/auth', manageRouter);
 //Hotel - Properties - CRUD
@@ -54,6 +58,6 @@ app.use('/hotel-properties', amenitiesHotelRouter);
 app.use('/hotel-properties', hotelRouter);
 app.use('/hotel-properties', roomRouter);
 app.use('/hotel-properties', roompriceRouter);
-
+app.use('/hotel-properties', userRouter)
 
 export default app;
